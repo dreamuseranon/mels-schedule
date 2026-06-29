@@ -1,4 +1,5 @@
 import { DashboardData, Item, Week } from "./types";
+import { EXAM_GUIDES } from "./examData";
 
 function id() {
   return Math.random().toString(36).slice(2, 10);
@@ -189,6 +190,7 @@ export function buildSeedData(): DashboardData {
     semesterStart,
     items: rawItems.map((raw) => ({ ...raw, id: id() })),
     weeks: buildWeeks(semesterStart),
+    examGuides: EXAM_GUIDES,
   };
 }
 

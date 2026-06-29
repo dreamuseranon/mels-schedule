@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useRef, useCallback } from "react";
-import { DashboardData, Item } from "./types";
+import { DashboardData, Item, ConfidenceLevel } from "./types";
 import { buildWeeks } from "./seedData";
 
 const DEBOUNCE_MS = 1200;
@@ -49,55 +49,83 @@ export function useDashboard() {
     [persist]
   );
 
+  // ── Items ──────────────────────────────────────────────────────
   const toggleItem = useCallback(
-    (id: string) =>
-      update((d) => ({
-        ...d,
-        items: d.items.map((it) => (it.id === id ? { ...it, done: !it.done } : it)),
-      })),
-    [update]
-  );
+    (id: string) => update((d) => ({
+      ...d,
+      items: d.items.map((it) => it.id === id ? { ...it, done: !it.done } : it),
+    })), [update]);
 
   const addItem = useCallback(
     (item: Item) => update((d) => ({ ...d, items: [...d.items, item] })),
-    [update]
-  );
+    [update]);
 
   const deleteItem = useCallback(
     (id: string) => update((d) => ({ ...d, items: d.items.filter((it) => it.id !== id) })),
-    [update]
-  );
+    [update]);
 
+  // ── Weekly topics ──────────────────────────────────────────────
   const toggleTopic = useCallback(
-    (weekNum: number, topicId: string) =>
-      update((d) => ({
-        ...d,
-        weeks: d.weeks.map((w) =>
-          w.weekNum === weekNum
-            ? {
-                ...w,
-                topics: w.topics.map((t) =>
-                  t.id === topicId ? { ...t, done: !t.done } : t
-                ),
-              }
-            : w
-        ),
-      })),
-    [update]
-  );
+    (weekNum: number, topicId: string) => update((d) => ({
+      ...d,
+      weeks: d.weeks.map((w) =>
+        w.weekNum !== weekNum ? w : {
+          ...w,
+          topics: w.topics.map((t) => t.id === topicId ? { ...t, done: !t.done } : t),
+        }
+      ),
+    })), [update]);
 
   const changeSemesterStart = useCallback(
-    (date: string) =>
+    (date: string) => update((d) => ({
+      ...d,
+      semesterStart: date,
+      weeks: buildWeeks(date).map((newW, i) => ({
+        ...newW,
+        topics: d.weeks[i]?.topics ?? newW.topics,
+      })),
+    })), [update]);
+
+  // ── Exam Intelligence ──────────────────────────────────────────
+  const toggleSubtopic = useCallback(
+    (examKey: string, topicId: string, subtopicId: string) =>
       update((d) => ({
         ...d,
-        semesterStart: date,
-        weeks: buildWeeks(date).map((newW, i) => ({
-          ...newW,
-          topics: d.weeks[i]?.topics ?? newW.topics,
-        })),
+        examGuides: d.examGuides.map((g) =>
+          g.examKey !== examKey ? g : {
+            ...g,
+            topics: g.topics.map((t) =>
+              t.id !== topicId ? t : {
+                ...t,
+                subtopics: t.subtopics.map((s) =>
+                  s.id !== subtopicId ? s : { ...s, done: !s.done }
+                ),
+              }
+            ),
+          }
+        ),
       })),
-    [update]
-  );
+    [update]);
 
-  return { data, saveStatus, toggleItem, addItem, deleteItem, toggleTopic, changeSemesterStart };
+  const setConfidence = useCallback(
+    (examKey: string, topicId: string, level: ConfidenceLevel) =>
+      update((d) => ({
+        ...d,
+        examGuides: d.examGuides.map((g) =>
+          g.examKey !== examKey ? g : {
+            ...g,
+            topics: g.topics.map((t) =>
+              t.id !== topicId ? t : { ...t, confidence: level }
+            ),
+          }
+        ),
+      })),
+    [update]);
+
+  return {
+    data, saveStatus,
+    toggleItem, addItem, deleteItem,
+    toggleTopic, changeSemesterStart,
+    toggleSubtopic, setConfidence,
+  };
 }

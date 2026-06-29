@@ -1,26 +1,33 @@
 "use client";
 import { useState } from "react";
 import { useDashboard } from "@/lib/useDashboard";
-import LandscapeBanner from "@/components/LandscapeBanner";
+import HeroBrand from "@/components/HeroBrand";
 import Clock from "@/components/Clock";
 import GlitterBg from "@/components/GlitterBg";
 import TrackerView from "@/components/TrackerView";
 import CalendarView from "@/components/CalendarView";
 import WeeklyTopicsView from "@/components/WeeklyTopicsView";
 import AppointmentsView from "@/components/AppointmentsView";
+import ExamIntelligenceView from "@/components/ExamIntelligenceView";
 import MonthJump from "@/components/MonthJump";
 
-type Tab = "tracker" | "calendar" | "topics" | "appointments";
+type Tab = "tracker" | "calendar" | "topics" | "appointments" | "exams";
 
 const TABS: { id: Tab; label: string; emoji: string }[] = [
-  { id: "tracker",      label: "Tracker",       emoji: "🌸" },
-  { id: "calendar",     label: "Calendar",       emoji: "✦"  },
-  { id: "topics",       label: "Weekly Topics",  emoji: "✧"  },
-  { id: "appointments", label: "Appointments",   emoji: "🩺" },
+  { id: "tracker",      label: "Dashboard",        emoji: "🌸" },
+  { id: "exams",        label: "Exam Intel",        emoji: "✦"  },
+  { id: "calendar",     label: "Calendar",          emoji: "📅" },
+  { id: "topics",       label: "Weekly Topics",     emoji: "✧"  },
+  { id: "appointments", label: "Appointments",      emoji: "🩺" },
 ];
 
 export default function Home() {
-  const { data, saveStatus, toggleItem, addItem, deleteItem, toggleTopic } = useDashboard();
+  const {
+    data, saveStatus,
+    toggleItem, addItem, deleteItem,
+    toggleTopic,
+    toggleSubtopic, setConfidence,
+  } = useDashboard();
   const [tab, setTab] = useState<Tab>("tracker");
   const [calMonth, setCalMonth] = useState(() => new Date().getMonth());
   const [calYear,  setCalYear]  = useState(() => new Date().getFullYear());
@@ -41,14 +48,12 @@ export default function Home() {
 
   return (
     <div className="min-h-screen relative">
-      {/* twinkling bg stars */}
       <GlitterBg />
 
-      {/* everything above bg stars */}
       <div className="relative" style={{ zIndex: 1 }}>
 
-        {/* Banner */}
-        <LandscapeBanner />
+        {/* Premium brand header */}
+        <HeroBrand />
 
         {/* Save status + clock bar */}
         <div
@@ -78,19 +83,21 @@ export default function Home() {
           <Clock />
         </div>
 
-        {/* Month jump strip */}
-        <div
-          className="px-4 py-2"
-          style={{
-            background: "rgba(255,255,255,0.3)",
-            backdropFilter: "blur(8px)",
-            borderBottom: "1px solid rgba(255,255,255,0.45)",
-          }}
-        >
-          <div className="max-w-6xl mx-auto">
-            <MonthJump onJump={handleJump} currentMonth={calMonth} currentYear={calYear} />
+        {/* Month jump strip — only show when calendar is visible */}
+        {tab === "calendar" && (
+          <div
+            className="px-4 py-2"
+            style={{
+              background: "rgba(255,255,255,0.3)",
+              backdropFilter: "blur(8px)",
+              borderBottom: "1px solid rgba(255,255,255,0.45)",
+            }}
+          >
+            <div className="max-w-6xl mx-auto">
+              <MonthJump onJump={handleJump} currentMonth={calMonth} currentYear={calYear} />
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Nav tabs */}
         <div
@@ -101,7 +108,7 @@ export default function Home() {
             borderBottom: "1px solid rgba(255,255,255,0.5)",
           }}
         >
-          <div className="max-w-6xl mx-auto flex">
+          <div className="max-w-6xl mx-auto flex overflow-x-auto">
             {TABS.map((t) => {
               const active = tab === t.id;
               return (
@@ -111,13 +118,18 @@ export default function Home() {
                   className="fredoka text-sm transition-all"
                   style={{
                     fontWeight: active ? 600 : 400,
-                    color: active ? "var(--lav-d)" : "var(--muted)",
+                    color: active
+                      ? (t.id === "exams" ? "#9b59d4" : "var(--lav-d)")
+                      : "var(--muted)",
                     background: "none",
                     border: "none",
-                    borderBottom: active ? "2.5px solid var(--lav-d)" : "2.5px solid transparent",
+                    borderBottom: active
+                      ? `2.5px solid ${t.id === "exams" ? "#9b59d4" : "var(--lav-d)"}`
+                      : "2.5px solid transparent",
                     cursor: "pointer",
                     padding: "12px 16px",
                     letterSpacing: "0.01em",
+                    whiteSpace: "nowrap",
                   }}
                 >
                   {t.emoji} {t.label}
@@ -130,6 +142,7 @@ export default function Home() {
         {/* Content */}
         <main className="max-w-6xl mx-auto px-4 py-6">
           {tab === "tracker"      && <TrackerView      data={data} onToggle={toggleItem} onAdd={addItem} onDelete={deleteItem} />}
+          {tab === "exams"        && <ExamIntelligenceView data={data} toggleSubtopic={toggleSubtopic} setConfidence={setConfidence} />}
           {tab === "calendar"     && <CalendarView     data={data} onToggle={toggleItem} onAdd={addItem} onDelete={deleteItem} activeMonth={{ year: calYear, month: calMonth }} />}
           {tab === "topics"       && <WeeklyTopicsView data={data} onToggleTopic={toggleTopic} />}
           {tab === "appointments" && <AppointmentsView data={data} onToggle={toggleItem} onAdd={addItem} onDelete={deleteItem} />}
@@ -143,7 +156,7 @@ export default function Home() {
             background: "rgba(255,255,255,0.2)",
           }}
         >
-          ✦ you&apos;re doing amazing ✦
+          ✦ Luminary · Nursing Student OS · you&apos;re doing amazing ✦
         </footer>
       </div>
     </div>
