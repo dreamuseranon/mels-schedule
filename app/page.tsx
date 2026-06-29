@@ -11,11 +11,11 @@ import MonthJump from "@/components/MonthJump";
 
 type Tab = "tracker" | "calendar" | "topics" | "appointments";
 
-const TABS: { id: Tab; label: string }[] = [
-  { id: "tracker",      label: "Tracker" },
-  { id: "calendar",     label: "Calendar" },
-  { id: "topics",       label: "Weekly Topics" },
-  { id: "appointments", label: "Appointments" },
+const TABS: { id: Tab; label: string; emoji: string }[] = [
+  { id: "tracker",      label: "Tracker",        emoji: "🌸" },
+  { id: "calendar",     label: "Calendar",        emoji: "🗓️" },
+  { id: "topics",       label: "Weekly Topics",   emoji: "✨" },
+  { id: "appointments", label: "Appointments",    emoji: "🩺" },
 ];
 
 export default function Home() {
@@ -39,18 +39,25 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen" style={{ background: "var(--cream)" }}>
+    <div className="min-h-screen" style={{ background: "var(--bg)" }}>
       {/* Landscape banner */}
       <div className="w-full" style={{ borderBottom: "1px solid var(--border)" }}>
         <LandscapeBanner />
       </div>
 
       {/* Header */}
-      <header className="px-4 py-4" style={{ borderBottom: "1px solid var(--border)" }}>
+      <header
+        className="px-4 py-4"
+        style={{
+          borderBottom: "1px solid var(--border)",
+          background: "rgba(255,255,255,0.6)",
+          backdropFilter: "blur(8px)",
+        }}
+      >
         <div className="max-w-6xl mx-auto flex items-center justify-between gap-4 flex-wrap">
           <div>
-            <h1 className="mono text-2xl font-bold tracking-tight" style={{ color: "var(--text)" }}>
-              Mel&apos;s Schedule
+            <h1 className="mono text-2xl font-bold tracking-tight holo">
+              ✦ Mel&apos;s Schedule ✦
             </h1>
             <p className="text-xs mt-0.5" style={{ color: "var(--muted)" }}>
               NUR304 · NUR326 · NUR347 · Summer 2026
@@ -61,14 +68,14 @@ export default function Home() {
               className="text-xs"
               style={{
                 color:
-                  saveStatus === "saving" ? "#D9A85C"
-                  : saveStatus === "saved" ? "#93AC7E"
-                  : saveStatus === "error" ? "#C0392B"
+                  saveStatus === "saving" ? "var(--lavender)"
+                  : saveStatus === "saved" ? "var(--sky-d)"
+                  : saveStatus === "error" ? "#E05080"
                   : "transparent",
               }}
             >
-              {saveStatus === "saving" ? "saving…"
-                : saveStatus === "saved" ? "✓ saved"
+              {saveStatus === "saving" ? "✧ saving…"
+                : saveStatus === "saved" ? "✦ saved"
                 : saveStatus === "error" ? "save error"
                 : "·"}
             </span>
@@ -88,25 +95,28 @@ export default function Home() {
       </div>
 
       {/* Nav tabs */}
-      <div className="px-4" style={{ borderBottom: "1px solid var(--border)" }}>
+      <div
+        className="px-4"
+        style={{ borderBottom: "1px solid var(--border)", background: "rgba(255,255,255,0.5)" }}
+      >
         <div className="max-w-6xl mx-auto flex">
           {TABS.map((t) => (
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className="px-4 py-3 text-sm transition-all"
+              className="text-sm transition-all"
               style={{
                 fontFamily: "monospace",
                 fontWeight: tab === t.id ? "bold" : "normal",
-                color: tab === t.id ? "var(--text)" : "var(--muted)",
-                borderBottom: tab === t.id ? "2px solid var(--text)" : "2px solid transparent",
+                color: tab === t.id ? "var(--lav-d)" : "var(--muted)",
+                borderBottom: tab === t.id ? "2px solid var(--lavender)" : "2px solid transparent",
                 background: "none",
                 border: "none",
                 cursor: "pointer",
                 padding: "12px 16px",
               }}
             >
-              {t.label}
+              {t.emoji} {t.label}
             </button>
           ))}
         </div>
@@ -147,9 +157,9 @@ export default function Home() {
       {/* Footer */}
       <footer
         className="text-center py-4 text-xs"
-        style={{ color: "var(--border)", borderTop: "1px solid var(--border)" }}
+        style={{ color: "var(--muted)", borderTop: "1px solid var(--border)" }}
       >
-        you&apos;re doing great ✦
+        ✦ you&apos;re doing amazing ✦
       </footer>
     </div>
   );

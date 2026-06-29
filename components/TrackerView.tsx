@@ -37,15 +37,15 @@ export default function TrackerView({ data, onToggle, onAdd, onDelete }: Props) 
       {/* Due Soon & Overdue banner */}
       {urgent.length > 0 && (
         <div
-          className="rounded-lg p-3"
+          className="rounded-xl p-3 shimmer-card"
           style={{
-            background: "#FEF3E2",
-            border: "1px solid #D9A85C66",
-            borderLeft: "4px solid #D9A85C",
+            background: "linear-gradient(135deg, #FFE8F4, #EEE0FF)",
+            border: "1px solid var(--border)",
+            borderLeft: "4px solid var(--pink)",
           }}
         >
-          <p className="mono text-sm font-bold mb-2" style={{ color: "#A0522D" }}>
-            ⚠️ Due Soon & Overdue
+          <p className="mono text-sm font-bold mb-2" style={{ color: "var(--lav-d)" }}>
+            🌸 Due Soon & Overdue
           </p>
           <div className="flex flex-col gap-1">
             {urgent.map((it) => (
@@ -64,11 +64,12 @@ export default function TrackerView({ data, onToggle, onAdd, onDelete }: Props) 
           return (
             <div
               key={course}
-              className="rounded-lg flex flex-col"
+              className="rounded-xl flex flex-col shimmer-card"
               style={{
                 border: "1px solid var(--border)",
                 borderTop: `4px solid ${accent}`,
-                background: "rgba(255,255,255,0.55)",
+                background: "rgba(255,255,255,0.72)",
+                boxShadow: `0 2px 16px ${accent}22`,
               }}
             >
               <div className="px-3 pt-3 pb-2 flex items-center justify-between">

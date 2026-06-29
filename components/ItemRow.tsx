@@ -16,7 +16,7 @@ export default function ItemRow({ item, onToggle, onDelete, showCourse }: Props)
     (new Date(item.date).getTime() - Date.now()) / 86400000
   );
   const overdue = !item.done && daysAway < 0;
-  const soon = !item.done && daysAway >= 0 && daysAway <= 3;
+  const soon    = !item.done && daysAway >= 0 && daysAway <= 3;
 
   const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
@@ -59,10 +59,10 @@ export default function ItemRow({ item, onToggle, onDelete, showCourse }: Props)
             </span>
           ) : null}
           {overdue && (
-            <span className="text-xs font-bold" style={{ color: "#C0392B" }}>overdue</span>
+            <span className="text-xs font-bold px-1.5 py-0.5 rounded-full" style={{ background: "#FFD8E8", color: "#C0306A" }}>overdue</span>
           )}
           {soon && (
-            <span className="text-xs font-semibold" style={{ color: "#D9A85C" }}>due soon</span>
+            <span className="text-xs font-semibold px-1.5 py-0.5 rounded-full" style={{ background: "#EEE0FF", color: "var(--lav-d)" }}>✧ due soon</span>
           )}
           {showCourse && (
             <span className="text-xs px-1 rounded" style={{ background: accent + "22", color: accent }}>

@@ -22,11 +22,11 @@ export default function Clock() {
 
   return (
     <span
-      className="mono text-sm tabular-nums px-3 py-1 rounded"
+      className="mono text-sm tabular-nums px-3 py-1 rounded-full"
       style={{
-        background: "rgba(255,255,255,0.55)",
+        background: "linear-gradient(135deg, #FFE8F4, #EEE8FF)",
         border: "1px solid var(--border)",
-        color: "var(--muted)",
+        color: "var(--lav-d)",
         letterSpacing: "0.05em",
       }}
     >
