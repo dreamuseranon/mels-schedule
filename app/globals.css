@@ -2,99 +2,137 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=Nunito:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
+
+/* ── Color tokens ── */
 :root {
-  --bg:       #FDF5FF;
-  --pink:     #FFB7D5;
-  --pink-d:   #FF86B8;
-  --lavender: #C8B0F0;
-  --lav-d:    #A98BE0;
-  --sky:      #A8D8F0;
-  --sky-d:    #6BB8E0;
-  --mint:     #B0ECD8;
-  --peach:    #FFD0A8;
-  --text:     #4A3060;
-  --muted:    #9880B8;
-  --border:   #E8D8F8;
-  --white:    #FFFFFF;
-  --card:     rgba(255,255,255,0.72);
+  --pink:    #FFB5C8;
+  --pink-d:  #FF7AAE;
+  --lav:     #D4B0FF;
+  --lav-d:   #A87AE8;
+  --sky:     #A0D8FF;
+  --sky-d:   #5AAFE8;
+  --mint:    #A8F0DC;
+  --peach:   #FFD8A8;
+  --yellow:  #FFF0A0;
+  --text:    #5A3880;
+  --muted:   #A88AC8;
+  --border:  rgba(255,255,255,0.55);
+  --card:    rgba(255,255,255,0.52);
 }
 
 * { box-sizing: border-box; }
 
+/* ── Animated aurora swirl background ── */
+@keyframes auroraBg {
+  0%   { background-position: 0% 50%; }
+  25%  { background-position: 100% 0%; }
+  50%  { background-position: 100% 100%; }
+  75%  { background-position: 0% 100%; }
+  100% { background-position: 0% 50%; }
+}
+
 body {
-  background: var(--bg);
-  background-image:
-    radial-gradient(circle at 20% 20%, rgba(200,176,240,0.18) 0%, transparent 50%),
-    radial-gradient(circle at 80% 80%, rgba(168,216,240,0.18) 0%, transparent 50%),
-    radial-gradient(circle at 60% 10%, rgba(255,183,213,0.15) 0%, transparent 40%);
+  background: linear-gradient(
+    -45deg,
+    #FFB5C8, #FFD4A0, #FFFAAA, #A8F0DC,
+    #A0D8FF, #D4B0FF, #FFB5C8, #FF9BE0,
+    #C0EAFF, #FFE0B0
+  );
+  background-size: 600% 600%;
+  animation: auroraBg 16s ease infinite;
   color: var(--text);
-  font-family: 'Inter', system-ui, sans-serif;
+  font-family: 'Nunito', system-ui, sans-serif;
   min-height: 100vh;
 }
 
-h1, h2, h3, .mono {
-  font-family: 'Courier New', 'Courier', monospace;
+/* ── Typography ── */
+h1, h2, h3, .fredoka {
+  font-family: 'Fredoka', sans-serif;
+  letter-spacing: 0.01em;
 }
 
+/* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 999px; }
+::-webkit-scrollbar-thumb {
+  background: rgba(168,122,232,0.35);
+  border-radius: 999px;
+}
 
-/* ── Square kawaii checkbox ── */
+/* ── Kawaii square checkbox ── */
 input[type="checkbox"] {
   appearance: none;
   -webkit-appearance: none;
-  width: 17px;
-  height: 17px;
-  border: 2px solid var(--border);
-  border-radius: 4px;
-  background: white;
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(168,122,232,0.5);
+  border-radius: 5px;
+  background: rgba(255,255,255,0.8);
   cursor: pointer;
   position: relative;
   flex-shrink: 0;
-  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  transition: transform 0.15s, border-color 0.2s, background 0.2s;
 }
 input[type="checkbox"]:hover {
-  border-color: var(--lavender);
-  transform: scale(1.1);
+  border-color: var(--lav-d);
+  transform: scale(1.12) rotate(-3deg);
 }
 input[type="checkbox"]:checked {
-  background: linear-gradient(135deg, var(--pink), var(--lavender));
-  border-color: var(--lavender);
+  background: linear-gradient(135deg, #FF7AAE, #A87AE8, #5AAFE8);
+  border-color: transparent;
 }
 input[type="checkbox"]:checked::after {
   content: '';
   position: absolute;
-  left: 3px; top: 0px;
+  left: 4px; top: 1px;
   width: 5px; height: 9px;
-  border: 2px solid white;
+  border: 2.5px solid white;
   border-top: none;
   border-left: none;
   transform: rotate(45deg);
 }
 
-/* ── Holographic shimmer for headings ── */
-@keyframes holoshimmer {
+/* ── Holographic / iridescent shimmer ── */
+@keyframes holoShift {
   0%   { background-position: 0% 50%; }
   50%  { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
-.holo {
+.holo-text {
   background: linear-gradient(
     90deg,
-    #FFB7D5, #C8B0F0, #A8D8F0, #B0ECD8, #FFD0A8, #FFB7D5, #C8B0F0
+    #FF7AAE, #A87AE8, #5AAFE8, #A8F0DC, #FFF0A0, #FF9BE0, #FF7AAE
   );
   background-size: 300% 300%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: holoshimmer 4s ease infinite;
+  animation: holoShift 4s ease infinite;
 }
 
-/* ── Shimmer card effect ── */
-@keyframes shimmerpass {
+/* ── Iridescent card border glow ── */
+@keyframes borderGlow {
+  0%, 100% { border-color: rgba(255,181,200,0.6); }
+  33%       { border-color: rgba(212,176,255,0.6); }
+  66%       { border-color: rgba(160,216,255,0.6); }
+}
+
+.kawaii-card {
+  background: rgba(255,255,255,0.52);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(255,255,255,0.7);
+  border-radius: 18px;
+  box-shadow:
+    0 4px 24px rgba(168,122,232,0.12),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+/* ── Shimmer sweep ── */
+@keyframes shimmerSweep {
   0%   { transform: translateX(-100%) skewX(-15deg); }
-  100% { transform: translateX(200%) skewX(-15deg); }
+  100% { transform: translateX(250%) skewX(-15deg); }
 }
 .shimmer-card {
   position: relative;
@@ -104,41 +142,43 @@ input[type="checkbox"]:checked::after {
   content: '';
   position: absolute;
   top: 0; left: 0;
-  width: 40%;
+  width: 35%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
-  animation: shimmerpass 3.5s ease-in-out infinite;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+  animation: shimmerSweep 4s ease-in-out infinite;
   pointer-events: none;
+  border-radius: inherit;
 }
 
-/* ── Sparkle / glitter confetti ── */
+/* ── Sparkle burst on check ── */
 @keyframes sparklePop {
-  0%   { transform: translate(0,0) scale(1) rotate(0deg); opacity: 1; }
+  0%   { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 1; }
   100% { transform: translate(var(--tx), var(--ty)) scale(0) rotate(var(--rot)); opacity: 0; }
 }
 .sparkle-particle {
   position: fixed;
   pointer-events: none;
-  font-size: 14px;
-  animation: sparklePop 0.9s ease-out forwards;
+  font-style: normal;
+  animation: sparklePop 1s ease-out forwards;
   z-index: 9999;
+  user-select: none;
+  line-height: 1;
+}
+
+/* ── Twinkling bg stars ── */
+@keyframes twinkle {
+  0%, 100% { opacity: 0.1; transform: scale(0.7) rotate(0deg); }
+  50%       { opacity: 0.9; transform: scale(1.2) rotate(20deg); }
+}
+.bg-star {
+  position: fixed;
+  pointer-events: none;
+  z-index: 0;
+  animation: twinkle ease-in-out infinite;
   user-select: none;
 }
 
-/* ── Glitter background particles ── */
-@keyframes glitterFloat {
-  0%, 100% { opacity: 0; transform: translateY(0) scale(0.5); }
-  50%       { opacity: 0.7; transform: translateY(-8px) scale(1); }
-}
-.glitter-dot {
-  position: fixed;
-  border-radius: 50%;
-  pointer-events: none;
-  animation: glitterFloat linear infinite;
-  z-index: 0;
-}
-
-/* ── Pop on check ── */
+/* ── Pop ── */
 @keyframes pop {
   0%   { transform: scale(1); }
   40%  { transform: scale(1.35); }
@@ -146,11 +186,9 @@ input[type="checkbox"]:checked::after {
 }
 .pop { animation: pop 0.22s ease-out; }
 
-/* ── Cloud drift ── */
-@keyframes cloudDrift {
-  0%   { transform: translateX(0); }
-  50%  { transform: translateX(12px); }
-  100% { transform: translateX(0); }
+/* ── Floating ── */
+@keyframes floatUp {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-6px); }
 }
-.cloud-drift { animation: cloudDrift 8s ease-in-out infinite; }
-.cloud-drift-slow { animation: cloudDrift 13s ease-in-out infinite; }
+.float { animation: floatUp 4s ease-in-out infinite; }

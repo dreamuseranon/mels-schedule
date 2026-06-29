@@ -11,34 +11,30 @@ interface Props {
 export default function MonthJump({ onJump, currentMonth, currentYear }: Props) {
   const now = new Date();
   const thisMonth = now.getMonth();
-  const thisYear = now.getFullYear();
+  const thisYear  = now.getFullYear();
 
   return (
-    <div className="flex gap-1 overflow-x-auto pb-1">
+    <div className="flex gap-1.5 overflow-x-auto pb-1">
       {MONTHS.map((name, i) => {
-        const isActive = i === currentMonth && thisYear === currentYear;
-        const isNow = i === thisMonth && thisYear === currentYear;
+        const isActive = i === currentMonth;
+        const isNow    = i === thisMonth && thisYear === currentYear;
         return (
           <button
             key={i}
             onClick={() => onJump(i, thisYear)}
-            className="flex-shrink-0 flex flex-col items-center px-2 py-1.5 rounded text-xs transition-all"
+            className="fredoka flex-shrink-0 px-2.5 py-1 rounded-full text-xs transition-all"
             style={{
-              border: `1px solid ${isActive ? "#7FAFC9" : "var(--border)"}`,
-              background: isActive ? "#7FAFC922" : "rgba(255,255,255,0.6)",
-              color: isNow ? "#7FAFC9" : "var(--text)",
-              fontFamily: "monospace",
-              fontWeight: isNow || isActive ? "bold" : "normal",
-              minWidth: 40,
+              background: isActive
+                ? "linear-gradient(135deg, var(--pink), var(--lav))"
+                : "rgba(255,255,255,0.55)",
+              color: isActive ? "white" : isNow ? "var(--lav-d)" : "var(--muted)",
+              border: isNow && !isActive ? "1.5px solid var(--lav)" : "1.5px solid transparent",
+              fontWeight: isActive || isNow ? 700 : 500,
+              backdropFilter: "blur(6px)",
+              boxShadow: isActive ? "0 2px 10px rgba(168,122,232,0.3)" : "none",
             }}
           >
             {name}
-            {isNow && (
-              <span
-                className="w-1 h-1 rounded-full mt-0.5"
-                style={{ background: "#7FAFC9", display: "block" }}
-              />
-            )}
           </button>
         );
       })}

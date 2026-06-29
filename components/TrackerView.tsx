@@ -37,14 +37,10 @@ export default function TrackerView({ data, onToggle, onAdd, onDelete }: Props) 
       {/* Due Soon & Overdue banner */}
       {urgent.length > 0 && (
         <div
-          className="rounded-xl p-3 shimmer-card"
-          style={{
-            background: "linear-gradient(135deg, #FFE8F4, #EEE0FF)",
-            border: "1px solid var(--border)",
-            borderLeft: "4px solid var(--pink)",
-          }}
+          className="rounded-2xl p-3 shimmer-card kawaii-card"
+          style={{ borderLeft: "4px solid var(--pink-d)" }}
         >
-          <p className="mono text-sm font-bold mb-2" style={{ color: "var(--lav-d)" }}>
+          <p className="fredoka text-base font-semibold mb-2" style={{ color: "var(--lav-d)" }}>
             🌸 Due Soon & Overdue
           </p>
           <div className="flex flex-col gap-1">
@@ -64,16 +60,14 @@ export default function TrackerView({ data, onToggle, onAdd, onDelete }: Props) 
           return (
             <div
               key={course}
-              className="rounded-xl flex flex-col shimmer-card"
+              className="rounded-2xl flex flex-col shimmer-card kawaii-card"
               style={{
-                border: "1px solid var(--border)",
                 borderTop: `4px solid ${accent}`,
-                background: "rgba(255,255,255,0.72)",
-                boxShadow: `0 2px 16px ${accent}22`,
+                boxShadow: `0 4px 24px ${accent}33`,
               }}
             >
               <div className="px-3 pt-3 pb-2 flex items-center justify-between">
-                <span className="mono font-bold text-sm" style={{ color: accent }}>
+                <span className="fredoka font-semibold text-base" style={{ color: accent }}>
                   {COURSE_LABEL[course]}
                 </span>
                 <span className="text-xs" style={{ color: "var(--muted)" }}>

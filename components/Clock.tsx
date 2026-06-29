@@ -8,10 +8,7 @@ export default function Clock() {
     const tick = () => {
       setTime(
         new Date().toLocaleTimeString("en-US", {
-          hour: "numeric",
-          minute: "2-digit",
-          second: "2-digit",
-          hour12: true,
+          hour: "numeric", minute: "2-digit", second: "2-digit", hour12: true,
         })
       );
     };
@@ -22,12 +19,14 @@ export default function Clock() {
 
   return (
     <span
-      className="mono text-sm tabular-nums px-3 py-1 rounded-full"
+      className="fredoka text-sm tabular-nums px-4 py-1 rounded-full"
       style={{
-        background: "linear-gradient(135deg, #FFE8F4, #EEE8FF)",
-        border: "1px solid var(--border)",
+        background: "rgba(255,255,255,0.6)",
+        backdropFilter: "blur(8px)",
+        border: "1.5px solid rgba(255,255,255,0.8)",
         color: "var(--lav-d)",
-        letterSpacing: "0.05em",
+        letterSpacing: "0.04em",
+        boxShadow: "0 2px 12px rgba(168,122,232,0.15)",
       }}
     >
       {time}

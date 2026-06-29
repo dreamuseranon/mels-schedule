@@ -1,112 +1,124 @@
 "use client";
 export default function LandscapeBanner() {
   return (
-    <svg
-      viewBox="0 0 900 140"
-      xmlns="http://www.w3.org/2000/svg"
-      className="w-full"
-      style={{ display: "block" }}
+    <div
+      className="w-full relative overflow-hidden"
+      style={{ height: 130, background: "transparent" }}
       aria-hidden
     >
-      {/* sky gradient */}
-      <defs>
-        <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%"   stopColor="#EED8FF" />
-          <stop offset="100%" stopColor="#D8EEFF" />
-        </linearGradient>
-        <linearGradient id="hillGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%"   stopColor="#E8BFEE" />
-          <stop offset="100%" stopColor="#D4A8E8" />
-        </linearGradient>
-        <linearGradient id="hillGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%"   stopColor="#C8B0F0" />
-          <stop offset="100%" stopColor="#B09AE0" />
-        </linearGradient>
-        <linearGradient id="groundGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%"   stopColor="#F8C8E8" />
-          <stop offset="100%" stopColor="#F0B0D8" />
-        </linearGradient>
-        <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%"   stopColor="#FFF0A0" stopOpacity="1" />
-          <stop offset="100%" stopColor="#FFD8B0" stopOpacity="0" />
-        </radialGradient>
-      </defs>
+      {/* swirling blobs */}
+      <div style={{
+        position: "absolute", inset: 0,
+        background: "linear-gradient(120deg, #FFB5C8 0%, #FFD4A0 20%, #FFFAAA 35%, #A8F0DC 50%, #A0D8FF 65%, #D4B0FF 80%, #FFB5C8 100%)",
+        backgroundSize: "300% 300%",
+        animation: "auroraBg 10s ease infinite",
+        opacity: 0.55,
+      }} />
 
-      <rect width="900" height="140" fill="url(#skyGrad)" />
-
-      {/* sun glow */}
-      <ellipse cx="760" cy="38" rx="38" ry="38" fill="url(#sunGlow)" opacity="0.6" />
-      <circle cx="760" cy="38" r="20" fill="#FFE880" opacity="0.9" />
-
-      {/* sparkle stars */}
-      {[[120,18],[300,12],[480,22],[650,10],[820,20],[200,35],[550,8]].map(([x,y],i) => (
-        <g key={i} transform={`translate(${x},${y})`} opacity="0.7">
-          <line x1="0" y1="-5" x2="0" y2="5" stroke="#FFB7D5" strokeWidth="1.5" strokeLinecap="round"/>
-          <line x1="-5" y1="0" x2="5" y2="0" stroke="#FFB7D5" strokeWidth="1.5" strokeLinecap="round"/>
-          <line x1="-3" y1="-3" x2="3" y2="3" stroke="#C8B0F0" strokeWidth="1" strokeLinecap="round"/>
-          <line x1="3" y1="-3" x2="-3" y2="3" stroke="#C8B0F0" strokeWidth="1" strokeLinecap="round"/>
-        </g>
+      {/* glitter dots */}
+      {[
+        [8,20],[15,60],[25,10],[40,80],[55,30],[70,70],[82,15],[90,55],[33,50],[60,5],[78,90],[48,65]
+      ].map(([l,t],i) => (
+        <div key={i} style={{
+          position: "absolute",
+          left: `${l}%`, top: `${t}%`,
+          width: i%3===0 ? 3 : 2, height: i%3===0 ? 3 : 2,
+          borderRadius: "50%",
+          background: "white",
+          opacity: 0.9,
+          animation: `twinkle ${2+i*0.3}s ease-in-out infinite`,
+          animationDelay: `${i*0.25}s`,
+        }} />
       ))}
 
-      {/* cloud 1 — big fluffy */}
-      <g className="cloud-drift" transform="translate(80, 22)">
-        <ellipse cx="0"   cy="0"  rx="36" ry="22" fill="white" opacity="0.92"/>
-        <ellipse cx="28"  cy="5"  rx="28" ry="18" fill="white" opacity="0.88"/>
-        <ellipse cx="-26" cy="5"  rx="22" ry="15" fill="white" opacity="0.82"/>
-        <ellipse cx="10"  cy="-8" rx="20" ry="14" fill="white" opacity="0.9"/>
-      </g>
+      {/* 4-pointed sparkle stars */}
+      {[
+        { l:5,  t:25, s:18, c:"#FF7AAE", d:"0s"   },
+        { l:18, t:55, s:14, c:"#A87AE8", d:"0.5s" },
+        { l:30, t:15, s:22, c:"#5AAFE8", d:"1s"   },
+        { l:45, t:65, s:16, c:"#FF9BE0", d:"0.2s" },
+        { l:58, t:20, s:20, c:"#FFF0A0", d:"0.8s" },
+        { l:70, t:50, s:14, c:"#A8F0DC", d:"1.3s" },
+        { l:80, t:18, s:24, c:"#FFB5C8", d:"0.4s" },
+        { l:92, t:62, s:16, c:"#D4B0FF", d:"1.1s" },
+        { l:52, t:80, s:12, c:"#FF7AAE", d:"0.6s" },
+      ].map((star, i) => (
+        <div key={i} style={{
+          position: "absolute",
+          left: `${star.l}%`, top: `${star.t}%`,
+          fontSize: star.s, color: star.c,
+          animation: `twinkle 2.5s ease-in-out infinite`,
+          animationDelay: star.d,
+          lineHeight: 1, userSelect: "none",
+          filter: "drop-shadow(0 0 4px currentColor)",
+        }}>✦</div>
+      ))}
 
-      {/* cloud 2 */}
-      <g className="cloud-drift-slow" transform="translate(480, 18)">
-        <ellipse cx="0"   cy="0"  rx="30" ry="18" fill="white" opacity="0.85"/>
-        <ellipse cx="24"  cy="4"  rx="22" ry="14" fill="white" opacity="0.8"/>
-        <ellipse cx="-20" cy="4"  rx="18" ry="12" fill="white" opacity="0.75"/>
-        <ellipse cx="6"   cy="-7" rx="16" ry="11" fill="white" opacity="0.88"/>
-      </g>
+      {/* butterfly left */}
+      <div style={{
+        position: "absolute", left: "12%", top: "18%",
+        fontSize: 32, lineHeight: 1,
+        animation: "floatUp 4s ease-in-out infinite",
+        filter: "drop-shadow(0 0 6px rgba(255,150,220,0.6))",
+      }}>🦋</div>
 
-      {/* cloud 3 — small */}
-      <g className="cloud-drift" transform="translate(700, 28)" style={{animationDelay:"3s"}}>
-        <ellipse cx="0"  cy="0" rx="22" ry="13" fill="white" opacity="0.78"/>
-        <ellipse cx="16" cy="3" rx="16" ry="10" fill="white" opacity="0.72"/>
-        <ellipse cx="-14" cy="3" rx="13" ry="9" fill="white" opacity="0.68"/>
-      </g>
+      {/* butterfly right */}
+      <div style={{
+        position: "absolute", right: "14%", top: "22%",
+        fontSize: 24, lineHeight: 1,
+        animation: "floatUp 5s ease-in-out infinite",
+        animationDelay: "1.5s",
+        filter: "drop-shadow(0 0 5px rgba(180,130,255,0.5))",
+      }}>🦋</div>
 
-      {/* back hill – light lavender */}
-      <path d="M0 95 Q150 55 300 80 Q450 58 600 78 Q720 58 900 72 L900 140 L0 140 Z"
-        fill="url(#hillGrad1)" opacity="0.85"/>
+      {/* flower */}
+      <div style={{
+        position: "absolute", left: "4%", bottom: "10%",
+        fontSize: 22, lineHeight: 1,
+        animation: "floatUp 3.5s ease-in-out infinite",
+        animationDelay: "0.8s",
+      }}>🌸</div>
 
-      {/* mid hill – lavender */}
-      <path d="M0 112 Q100 80 220 100 Q350 78 500 105 Q640 82 780 100 Q860 90 900 96 L900 140 L0 140 Z"
-        fill="url(#hillGrad2)"/>
+      <div style={{
+        position: "absolute", right: "5%", bottom: "15%",
+        fontSize: 20, lineHeight: 1,
+        animation: "floatUp 4.5s ease-in-out infinite",
+        animationDelay: "2s",
+      }}>✿</div>
 
-      {/* front ground – pink */}
-      <path d="M0 128 Q200 118 450 125 Q680 115 900 122 L900 140 L0 140 Z"
-        fill="url(#groundGrad)"/>
-
-      {/* tiny kawaii flowers */}
-      {[[60,132],[170,128],[290,130],[420,126],[560,129],[700,127],[830,131]].map(([x,y],i) => {
-        const colors = ["#FFB7D5","#C8B0F0","#A8D8F0","#FFB7D5","#FFD0A8","#C8B0F0","#B0ECD8"];
-        return (
-          <g key={i} transform={`translate(${x},${y})`}>
-            {[0,60,120,180,240,300].map((angle, j) => (
-              <ellipse
-                key={j}
-                cx={Math.cos((angle*Math.PI)/180)*4}
-                cy={Math.sin((angle*Math.PI)/180)*4}
-                rx="3" ry="2"
-                fill={colors[i]}
-                opacity="0.9"
-                transform={`rotate(${angle})`}
-              />
-            ))}
-            <circle cx="0" cy="0" r="2" fill="#FFF0A0"/>
-            <line x1="0" y1="2" x2="0" y2="8" stroke="#A98BE0" strokeWidth="1.5"/>
-          </g>
-        );
-      })}
-
-      {/* holographic shimmer strip at bottom */}
-      <rect x="0" y="136" width="900" height="4" fill="url(#skyGrad)" opacity="0.5"/>
-    </svg>
+      {/* center title area */}
+      <div style={{
+        position: "absolute", inset: 0,
+        display: "flex", flexDirection: "column",
+        alignItems: "center", justifyContent: "center",
+        gap: 4,
+      }}>
+        <div style={{
+          fontFamily: "'Fredoka', sans-serif",
+          fontSize: 38,
+          fontWeight: 600,
+          background: "linear-gradient(90deg, #FF7AAE, #A87AE8, #5AAFE8, #A8F0DC, #FF9BE0)",
+          backgroundSize: "200% 100%",
+          WebkitBackgroundClip: "text",
+          WebkitTextFillColor: "transparent",
+          backgroundClip: "text",
+          animation: "holoShift 4s ease infinite",
+          filter: "drop-shadow(0 2px 8px rgba(168,122,232,0.3))",
+          textShadow: "none",
+          letterSpacing: "0.02em",
+        }}>
+          ✦ Mel&apos;s Schedule ✦
+        </div>
+        <div style={{
+          fontFamily: "'Nunito', sans-serif",
+          fontSize: 13,
+          color: "rgba(90,56,128,0.75)",
+          letterSpacing: "0.08em",
+          fontWeight: 600,
+        }}>
+          NUR304 · NUR326 · NUR347 · Summer 2026
+        </div>
+      </div>
+    </div>
   );
 }

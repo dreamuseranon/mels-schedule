@@ -58,29 +58,28 @@ export default function CalendarView({ data, onToggle, onAdd, onDelete, activeMo
       <div className="flex items-center gap-3">
         <button
           onClick={prev}
-          className="px-3 py-1 rounded text-sm"
-          style={{ border: "1px solid var(--border)", background: "white" }}
+          className="fredoka px-4 py-1.5 rounded-full text-sm font-semibold transition-all"
+          style={{ background: "rgba(255,255,255,0.6)", color: "var(--lav-d)", border: "1.5px solid rgba(255,255,255,0.8)" }}
         >‹</button>
-        <h2 className="mono text-lg font-bold flex-1 text-center">
+        <h2 className="fredoka text-xl font-semibold flex-1 text-center" style={{ color: "var(--lav-d)" }}>
           {MONTH_NAMES[month]} {year}
         </h2>
         <button
           onClick={next}
-          className="px-3 py-1 rounded text-sm"
-          style={{ border: "1px solid var(--border)", background: "white" }}
+          className="fredoka px-4 py-1.5 rounded-full text-sm font-semibold transition-all"
+          style={{ background: "rgba(255,255,255,0.6)", color: "var(--lav-d)", border: "1.5px solid rgba(255,255,255,0.8)" }}
         >›</button>
       </div>
 
       {/* grid */}
       <div
-        className="rounded-lg overflow-hidden"
-        style={{ border: "1px solid var(--border)", background: "rgba(255,255,255,0.5)" }}
+        className="rounded-2xl overflow-hidden kawaii-card"
       >
         {/* day headers */}
         <div className="grid grid-cols-7">
           {DAY_NAMES.map((d) => (
-            <div key={d} className="text-center text-xs py-2 mono font-bold"
-              style={{ color: "var(--muted)", borderBottom: "1px solid var(--border)" }}>
+            <div key={d} className="text-center text-xs py-2 fredoka font-semibold"
+              style={{ color: "var(--lav-d)", borderBottom: "1px solid rgba(255,255,255,0.4)" }}>
               {d}
             </div>
           ))}
