@@ -1,100 +1,155 @@
-import Image from "next/image";
+"use client";
+import { useState } from "react";
+import { useDashboard } from "@/lib/useDashboard";
+import LandscapeBanner from "@/components/LandscapeBanner";
+import Clock from "@/components/Clock";
+import TrackerView from "@/components/TrackerView";
+import CalendarView from "@/components/CalendarView";
+import WeeklyTopicsView from "@/components/WeeklyTopicsView";
+import AppointmentsView from "@/components/AppointmentsView";
+import MonthJump from "@/components/MonthJump";
+
+type Tab = "tracker" | "calendar" | "topics" | "appointments";
+
+const TABS: { id: Tab; label: string }[] = [
+  { id: "tracker",      label: "Tracker" },
+  { id: "calendar",     label: "Calendar" },
+  { id: "topics",       label: "Weekly Topics" },
+  { id: "appointments", label: "Appointments" },
+];
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const { data, saveStatus, toggleItem, addItem, deleteItem, toggleTopic } = useDashboard();
+  const [tab, setTab] = useState<Tab>("tracker");
+  const [calMonth, setCalMonth] = useState(() => new Date().getMonth());
+  const [calYear, setCalYear] = useState(() => new Date().getFullYear());
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  if (!data) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="mono text-sm" style={{ color: "var(--muted)" }}>loading…</p>
+      </div>
+    );
+  }
+
+  const handleJump = (month: number, year: number) => {
+    setCalMonth(month);
+    setCalYear(year);
+    setTab("calendar");
+  };
+
+  return (
+    <div className="min-h-screen" style={{ background: "var(--cream)" }}>
+      {/* Landscape banner */}
+      <div className="w-full" style={{ borderBottom: "1px solid var(--border)" }}>
+        <LandscapeBanner />
+      </div>
+
+      {/* Header */}
+      <header className="px-4 py-4" style={{ borderBottom: "1px solid var(--border)" }}>
+        <div className="max-w-6xl mx-auto flex items-center justify-between gap-4 flex-wrap">
+          <div>
+            <h1 className="mono text-2xl font-bold tracking-tight" style={{ color: "var(--text)" }}>
+              Mel&apos;s Schedule
+            </h1>
+            <p className="text-xs mt-0.5" style={{ color: "var(--muted)" }}>
+              NUR304 · NUR326 · NUR347 · Summer 2026
+            </p>
+          </div>
+          <div className="flex items-center gap-3">
+            <span
+              className="text-xs"
+              style={{
+                color:
+                  saveStatus === "saving" ? "#D9A85C"
+                  : saveStatus === "saved" ? "#93AC7E"
+                  : saveStatus === "error" ? "#C0392B"
+                  : "transparent",
+              }}
+            >
+              {saveStatus === "saving" ? "saving…"
+                : saveStatus === "saved" ? "✓ saved"
+                : saveStatus === "error" ? "save error"
+                : "·"}
+            </span>
+            <Clock />
+          </div>
         </div>
+      </header>
+
+      {/* Month jump strip */}
+      <div
+        className="px-4 py-2"
+        style={{ borderBottom: "1px solid var(--border)", background: "rgba(255,255,255,0.4)" }}
+      >
+        <div className="max-w-6xl mx-auto">
+          <MonthJump onJump={handleJump} currentMonth={calMonth} currentYear={calYear} />
+        </div>
+      </div>
+
+      {/* Nav tabs */}
+      <div className="px-4" style={{ borderBottom: "1px solid var(--border)" }}>
+        <div className="max-w-6xl mx-auto flex">
+          {TABS.map((t) => (
+            <button
+              key={t.id}
+              onClick={() => setTab(t.id)}
+              className="px-4 py-3 text-sm transition-all"
+              style={{
+                fontFamily: "monospace",
+                fontWeight: tab === t.id ? "bold" : "normal",
+                color: tab === t.id ? "var(--text)" : "var(--muted)",
+                borderBottom: tab === t.id ? "2px solid var(--text)" : "2px solid transparent",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                padding: "12px 16px",
+              }}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Content */}
+      <main className="max-w-6xl mx-auto px-4 py-6">
+        {tab === "tracker" && (
+          <TrackerView
+            data={data}
+            onToggle={toggleItem}
+            onAdd={addItem}
+            onDelete={deleteItem}
+          />
+        )}
+        {tab === "calendar" && (
+          <CalendarView
+            data={data}
+            onToggle={toggleItem}
+            onAdd={addItem}
+            onDelete={deleteItem}
+            activeMonth={{ year: calYear, month: calMonth }}
+          />
+        )}
+        {tab === "topics" && (
+          <WeeklyTopicsView data={data} onToggleTopic={toggleTopic} />
+        )}
+        {tab === "appointments" && (
+          <AppointmentsView
+            data={data}
+            onToggle={toggleItem}
+            onAdd={addItem}
+            onDelete={deleteItem}
+          />
+        )}
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+
+      {/* Footer */}
+      <footer
+        className="text-center py-4 text-xs"
+        style={{ color: "var(--border)", borderTop: "1px solid var(--border)" }}
+      >
+        you&apos;re doing great ✦
       </footer>
     </div>
   );

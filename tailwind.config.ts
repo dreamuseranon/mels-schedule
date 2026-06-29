@@ -9,8 +9,16 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        cream:   "var(--cream)",
+        pink:    "var(--pink)",
+        sage:    "var(--sage)",
+        blue:    "var(--blue)",
+        mustard: "var(--mustard)",
+        muted:   "var(--muted)",
+        border:  "var(--border)",
+      },
+      fontFamily: {
+        mono: ["'Courier New'", "Courier", "monospace"],
       },
     },
   },
