@@ -178,6 +178,59 @@ input[type="checkbox"]:checked::after {
   user-select: none;
 }
 
+/* ── Glass widget card ── */
+.widget-card {
+  background: rgba(255,255,255,0.45);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1.5px solid rgba(255,255,255,0.72);
+  border-radius: 24px;
+  box-shadow:
+    0 8px 32px rgba(168,122,232,0.1),
+    inset 0 1px 0 rgba(255,255,255,0.9);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.widget-card:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 14px 44px rgba(168,122,232,0.18),
+    inset 0 1px 0 rgba(255,255,255,0.95);
+}
+
+/* ── Stat card ── */
+.stat-card {
+  background: rgba(255,255,255,0.52);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1.5px solid rgba(255,255,255,0.8);
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(168,122,232,0.08);
+  transition: transform 0.15s ease;
+}
+.stat-card:hover { transform: translateY(-1px) scale(1.02); }
+
+/* ── Priority progress bar ── */
+@keyframes barGrow {
+  from { width: 0%; }
+  to   { width: var(--w); }
+}
+.priority-bar {
+  animation: barGrow 1s cubic-bezier(0.4,0,0.2,1) forwards;
+  width: var(--w);
+}
+
+/* ── Course pill ── */
+.course-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-family: 'Fredoka', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
 /* ── Pop ── */
 @keyframes pop {
   0%   { transform: scale(1); }

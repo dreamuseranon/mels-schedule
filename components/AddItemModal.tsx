@@ -52,11 +52,18 @@ export default function AddItemModal({ defaultDate, defaultCourse, onAdd, onClos
       onClick={onClose}
     >
       <div
-        className="rounded-lg p-6 w-full max-w-md shadow-xl"
-        style={{ background: "var(--cream)", border: "1px solid var(--border)", borderTop: `4px solid ${accent}` }}
+        className="rounded-3xl p-6 w-full max-w-md"
+        style={{
+          background: "rgba(255,255,255,0.72)",
+          backdropFilter: "blur(24px)",
+          WebkitBackdropFilter: "blur(24px)",
+          border: "1.5px solid rgba(255,255,255,0.85)",
+          boxShadow: "0 16px 48px rgba(168,122,232,0.2)",
+          borderTop: `4px solid ${accent}`,
+        }}
         onClick={(e) => e.stopPropagation()}
       >
-        <h3 className="mono text-lg mb-4" style={{ color: "var(--text)" }}>Add Item</h3>
+        <h3 className="fredoka text-xl mb-4" style={{ color: "var(--text)" }}>Add Item ✦</h3>
         <form onSubmit={submit} className="flex flex-col gap-3">
           <div className="flex gap-2">
             <div className="flex-1">
